@@ -1,75 +1,135 @@
-# React + TypeScript + Vite
+# 🟪 React Router
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🚀 Features
 
-Currently, two official plugins are available:
+- Full multi-page SPA using React Router
+- Nested routing for movie details, credits and reviews
+- Dynamic API fetching for different views
+- Search, pagination and trending filtering
+- Reusable UI components across multiple routes
+- Modal-based movie detail view with navigation control
+- Deep linking to nested routes (credits, reviews)
+- Query param based filtering for trending content
+- Custom hook based API abstraction (`useTmdb`)
+- Debounced search input for performance optimization
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🧠 Key Concepts
 
-## React Compiler
+### Client-Side Routing with React Router
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+The app uses `react-router-dom` to build a full SPA with multiple pages. Routes are defined centrally using `Routes` and `Route`, allowing navigation without page reloads.
 
-Note: This will impact Vite dev & build performances.
+Nested routes are used for movie details:
 
-## Expanding the ESLint configuration
+- `/movie/:id`
+- `/movie/:id/credits`
+- `/movie/:id/reviews`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+This demonstrates how React can model hierarchical UI structures using routing.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Nested Routing with `Outlet`
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The `MovieView` uses `Outlet` to render nested routes like credits and reviews. This allows shared layout while swapping inner content dynamically.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Dynamic Route Parameters
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+`useParams` is used to extract the movie `id` from the URL. This enables dynamic API requests based on the current route.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Programmatic Navigation
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+`useNavigate` is used to control navigation in code, such as:
+
+- Opening a modal
+- Going back on close
+- Navigating from a grid item click
+
+This shows how navigation can be event-driven rather than link-based.
+
+### Data Fetching with Custom Hooks
+
+The `useTmdb` hook abstracts API logic and is reused across all views. It handles:
+
+- Fetching data
+- Passing query params
+- Reacting to dependency changes
+
+This demonstrates reusable data-fetching logic across multiple pages.
+
+### Query Parameters and URL State
+
+The `TrendingView` uses `useSearchParams` to store UI state in the URL. This allows:
+
+- Shareable filter states
+- Persistent UI configuration
+- Clean separation of UI and data
+
+### Controlled Pagination
+
+Pagination is managed per view using `useState`. Each view independently controls its page state while reusing the same pagination component.
+
+### Conditional Rendering Across Routes
+
+Each view handles loading states independently and conditionally renders:
+
+- Loading UI
+- Empty states
+- Content views
+
+This ensures safe rendering based on API state.
+
+### Component Reusability at Scale
+
+Core UI components are reused across the app:
+
+- `ImageGrid` for lists of movies and people
+- `Pagination` for page navigation
+- `SearchBar` for search input
+- `ButtonGroup` for toggles
+- `Modal` for overlays
+- `Link` and `LinkGroup` for navigation
+
+This shows a scalable component-driven architecture.
+
+### Event-Driven UI Updates
+
+User interactions such as:
+
+- Clicking a movie
+- Changing pages
+- Switching trending interval
+- Searching content
+
+All trigger state updates and API re-fetches, demonstrating reactive UI design.
+
+### URL-Driven State vs Local State
+
+The app mixes:
+
+- Local state (`useState`) for UI control like modals and pagination
+- URL state (`useSearchParams`) for shareable filters
+
+This shows advanced state management strategy.
+
+### Type Safety with TypeScript
+
+Strong typing is used across:
+
+- API responses
+- Component props
+- Route params
+
+This ensures predictable data flow and reduces runtime errors.
+
+### Layout Composition with Shared Shells
+
+`MainLayout` wraps multiple routes, allowing shared UI like navigation while rendering different pages inside.
+
+## 🔧 Tech Stack
+
+- Vite
+- React
+- TypeScript
+- Tailwind CSS
+- React Router DOM
+- Axios
+- React Icons
