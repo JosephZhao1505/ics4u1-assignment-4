@@ -1,4 +1,4 @@
-import { ButtonGroup, ImageGrid, Pagination } from '@/components';
+import { ButtonGroup, Footer, ImageGrid, Pagination } from '@/components';
 import { TRENDING_ENDPOINT } from '@/core/constants';
 import type { MoviesResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
@@ -25,7 +25,7 @@ export const TrendingView = () => {
   return (
     <section className="max-w-[1200px] mx-auto p-5 space-y-5">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-3xl font-bold">Now Playing</h1>
+        <h1 className="text-3xl font-bold">Trending</h1>
         <ButtonGroup
           value={interval}
           options={[
@@ -37,6 +37,8 @@ export const TrendingView = () => {
       </div>
       <ImageGrid results={gridData} onClick={(id) => navigate(`/movie/${id}/credits`)} />
       <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
+      <Footer/>
     </section>
+    
   );
 };
