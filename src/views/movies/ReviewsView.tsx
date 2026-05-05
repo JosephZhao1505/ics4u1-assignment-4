@@ -1,11 +1,11 @@
-import { MOVIE_ENDPOINT } from '@/core/constants';
+import { MOVIE_LISTS_ENDPOINT } from '@/core/constants';
 import type { ReviewsResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
 import { useParams } from 'react-router-dom';
 
 export const ReviewsView = () => {
   const { id } = useParams();
-  const { data } = useTmdb<ReviewsResponse>(`${MOVIE_ENDPOINT}/${id}/reviews`, {}, []);
+  const { data } = useTmdb<ReviewsResponse>(`${MOVIE_LISTS_ENDPOINT}/${id}/reviews`, {}, []);
 
   if (!data) {
     return <p className="text-center text-gray-400">Loading...</p>;

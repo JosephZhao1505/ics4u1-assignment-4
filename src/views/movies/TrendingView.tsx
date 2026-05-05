@@ -1,21 +1,32 @@
-import { ButtonGroup, Footer, ImageGrid, Pagination } from '@/components';
+import { ButtonGroup, Footer, ImageGrid, LinkGroup, Pagination } from '@/components';
 import { TRENDING_ENDPOINT } from '@/core/constants';
-import type { MoviesResponse } from '@/core/types';
+import type { MoviesResponse, TvsResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
-import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 
 export const TrendingView = () => {
   const navigate = useNavigate();
   const [page, setPage] = useState<number>(1);
   const [searchParams, setSearchParams] = useSearchParams();
-  const interval = searchParams.get('interval') || 'day';
-  const { data } = useTmdb<MoviesResponse>(`${TRENDING_ENDPOINT}/${interval}`, { page, time_window: interval }, [page, interval]);
 
-  const gridData = (data?.results ?? []).map((result) => ({
+  const { mediaType } = useParams<{ mediaType: string }>();
+  const interval = searchParams.get('interval') || 'day';
+
+  const { data } = useTmdb<MoviesResponse | TvsResponse>(`${TRENDING_ENDPOINT}/${mediaType}/${interval}`, { page }, [
+    page,
+    mediaType,
+    interval,
+  ]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [mediaType, interval]);
+
+  const gridData = (data?.results ?? []).map((result: any) => ({
     id: result.id,
     imagePath: result.poster_path,
-    primaryText: result.original_title,
+    primaryText: result.original_title || result.original_name,
   }));
 
   if (!data) {
@@ -25,7 +36,13 @@ export const TrendingView = () => {
   return (
     <section className="max-w-[1200px] mx-auto p-5 space-y-5">
       <div className="flex items-center justify-between mb-4">
-        <h1 className="text-3xl font-bold">Trending</h1>
+        <LinkGroup
+          options={[
+            { label: 'Movies', to: '/trending/movie?interval=day' },
+            { label: 'TV', to: '/trending/tv?interval=day' },
+          ]}
+        />
+
         <ButtonGroup
           value={interval}
           options={[
@@ -35,10 +52,11 @@ export const TrendingView = () => {
           onClick={(value) => setSearchParams({ interval: value })}
         />
       </div>
-      <ImageGrid results={gridData} onClick={(id) => navigate(`/movie/${id}/credits`)} />
+      <ImageGrid results={gridData} onClick={(id) =>{
+        const mediaNav = mediaType === "movie" ? 'credits' : 'seasons';
+        navigate(`/${mediaType}/${id}/${mediaNav}`)}} />
       <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
-      <Footer/>
+      <Footer />
     </section>
-    
   );
 };
