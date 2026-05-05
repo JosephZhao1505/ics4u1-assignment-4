@@ -34,14 +34,23 @@ export type MovieResponse = {
   };
 };
 
-export type SeasonsResponse = {
+export type TvResponse = {
   id: number;
-  title: string;
   overview: string;
   poster_path: string;
   backdrop_path: string;
-  release_date: string;
   vote_average: string;
+  name?: string;
+  first_air_date?: string;
+  number_of_seasons?: number;
+  number_of_episodes?: number;
+    seasons?: Array<{
+    id: number;
+    name: string;
+    air_date?: string;
+    poster_path: string;
+    season_number: number;
+  }>;
   videos?: {
     results: Array<{
       key: string;
@@ -50,6 +59,19 @@ export type SeasonsResponse = {
       type: string;
     }>;
   };
+};
+
+export type SeasonResponse = {
+  name: string;
+  season_number: number;
+  air_date?: string;
+  overview: string;
+  episodes: Array<{
+    id: number;
+    name: string;
+    air_date: string;
+    still_path: string;
+  }>;
 };
 
 export type CreditsResponse = {

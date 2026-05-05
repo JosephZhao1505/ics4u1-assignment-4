@@ -1,48 +1,35 @@
-import { ImageGrid, Modal } from '@/components';
-import { IMAGE_BASE_URL, MOVIE_LISTS_ENDPOINT, ORIGINAL_IMAGE_BASE_URL } from '@/core/constants';
-import type { SeasonsResponse } from '@/core/types';
+import { ImageGrid } from '@/components';
+import { TELEVISION_LISTS_ENDPOINT } from '@/core/constants';
+import type { TvResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
-import { FaCalendarAlt } from 'react-icons/fa';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+// import { FaCalendarAlt } from 'react-icons/fa';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const SeasonsView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data } = useTmdb<SeasonsResponse>(`${MOVIE_LISTS_ENDPOINT}/${id}`, { append_to_response: 'videos' }, [id]);
+  const { data } = useTmdb<TvResponse>(`${TELEVISION_LISTS_ENDPOINT}/${id}`, {}, []);
 
-  const gridData = (data?.results ?? []).map((result: any) => ({
-    id: result.id,
-    imagePath: result.poster_path,
-    primaryText: result.original_title || result.original_name,
-  }));
+  const gridData = (data?.seasons ?? [])
+    .filter((result) => result.season_number > 0 && result.name) //remove the extra specials season
+    .map((result) => ({
+      id: result.season_number,
+      imagePath: result.poster_path,
+      primaryText: result.name,
+      secondaryText: result.air_date
+    }));
 
   if (!data) {
     return <p className="text-center text-gray-400">Loading...</p>;
   }
 
   return (
-    <Modal onClose={() => navigate(-1)}>
-      <div className="p-6 space-y-6">
-        <div
-          className="h-[420px] bg-cover bg-center rounded-2xl"
-          style={{
-            backgroundImage: `url(${ORIGINAL_IMAGE_BASE_URL}${data.backdrop_path})`,
-          }}
-        />
-        <div className="flex gap-8">
-          <img className="w-[220px] h-[330px] object-cover rounded-xl" src={`${IMAGE_BASE_URL}${data.poster_path}`} alt={data.title} />
-          <div className="flex-1 space-y-4">
-            <h1 className="text-3xl font-bold">{data.title}</h1>
-            <p className="text-gray-400 flex items-center gap-2">
-              <FaCalendarAlt />
-              {data.release_date}
-            </p>
-            <p className="text-gray-300">{data.overview}</p>
-          </div>
-      <ImageGrid results={gridData} onClick={(id) => navigate(`/tv/${id}`)} />
-        </div>
-        <Outlet />
-      </div>
-    </Modal>
+    <section className="px-2">
+      <h2 className="text-2xl font-bold mb-6">Seasons</h2>
+      {data.seasons?.length ?
+        <ImageGrid results={gridData} onClick={(season_number) => navigate(`/tv/${id}/season/${season_number}`)} /> :
+        <p className="text-gray-400 text-center">No seasons available.</p>
+      }
+    </section>
   );
 };
