@@ -38,8 +38,8 @@ export const TrendingView = () => {
       <div className="flex items-center justify-between mb-4">
         <LinkGroup
           options={[
-            { label: 'Movies', to: '/trending/movie?interval=day' },
-            { label: 'TV', to: '/trending/tv?interval=day' },
+            { label: 'Movies', to: `/trending/movie?interval=${interval}` },
+            { label: 'TV', to: `/trending/tv?interval=${interval}` },
           ]}
         />
 

@@ -1,6 +1,6 @@
 import { LinkGroup, Modal } from '@/components';
 import { IMAGE_BASE_URL, MOVIE_LISTS_ENDPOINT, ORIGINAL_IMAGE_BASE_URL } from '@/core/constants';
-import type { MovieRepsonse } from '@/core/types';
+import type { MovieResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
@@ -8,7 +8,7 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 export const MovieView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data } = useTmdb<MovieRepsonse>(`${MOVIE_LISTS_ENDPOINT}/${id}`, { append_to_response: 'videos' }, [id]);
+  const { data } = useTmdb<MovieResponse>(`${MOVIE_LISTS_ENDPOINT}/${id}`, { append_to_response: 'videos' }, [id]);
 
   const trailerVideo =
     data?.videos?.results.find((v) => v.site === 'YouTube' && v.type === 'Trailer' && v.name?.toLowerCase().includes('official')) ||

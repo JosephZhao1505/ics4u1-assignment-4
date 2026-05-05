@@ -16,7 +16,7 @@ export type TvsResponse = {
   total_pages: number;
 };
 
-export type MovieRepsonse = {
+export type MovieResponse = {
   id: number;
   title: string;
   overview: string;
@@ -34,7 +34,7 @@ export type MovieRepsonse = {
   };
 };
 
-export type SeasonsRepsonse = {
+export type SeasonsResponse = {
   id: number;
   title: string;
   overview: string;

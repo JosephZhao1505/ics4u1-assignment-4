@@ -1,6 +1,6 @@
-import { LinkGroup, Modal } from '@/components';
-import { IMAGE_BASE_URL, ORIGINAL_IMAGE_BASE_URL, TELEVISION_LISTS_ENDPOINT } from '@/core/constants';
-import type { MovieRepsonse } from '@/core/types';
+import { ImageGrid, Modal } from '@/components';
+import { IMAGE_BASE_URL, MOVIE_LISTS_ENDPOINT, ORIGINAL_IMAGE_BASE_URL } from '@/core/constants';
+import type { SeasonsResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
 import { FaCalendarAlt } from 'react-icons/fa';
 import { Outlet, useNavigate, useParams } from 'react-router-dom';
@@ -8,11 +8,13 @@ import { Outlet, useNavigate, useParams } from 'react-router-dom';
 export const SeasonsView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data } = useTmdb<MovieRepsonse>(`${TELEVISION_LISTS_ENDPOINT}/${id}`, { append_to_response: 'videos' }, [id]);
+  const { data } = useTmdb<SeasonsResponse>(`${MOVIE_LISTS_ENDPOINT}/${id}`, { append_to_response: 'videos' }, [id]);
 
-  const trailerVideo =
-    data?.videos?.results.find((v) => v.site === 'YouTube' && v.type === 'Trailer' && v.name?.toLowerCase().includes('official')) ||
-    data?.videos?.results.find((v) => v.site === 'YouTube' && v.type === 'Trailer');
+  const gridData = (data?.results ?? []).map((result: any) => ({
+    id: result.id,
+    imagePath: result.poster_path,
+    primaryText: result.original_title || result.original_name,
+  }));
 
   if (!data) {
     return <p className="text-center text-gray-400">Loading...</p>;
@@ -36,23 +38,8 @@ export const SeasonsView = () => {
               {data.release_date}
             </p>
             <p className="text-gray-300">{data.overview}</p>
-            {trailerVideo && (
-              <div className="aspect-video">
-                <iframe
-                  className="w-full h-full rounded-xl"
-                  src={`https://www.youtube.com/embed/${trailerVideo.key}`}
-                  title="Movie Trailer"
-                  allowFullScreen
-                />
-              </div>
-            )}
-            <LinkGroup
-              options={[
-                { label: 'Credits', to: 'credits' },
-                { label: 'Reviews', to: 'reviews' },
-              ]}
-            />
           </div>
+      <ImageGrid results={gridData} onClick={(id) => navigate(`/tv/${id}`)} />
         </div>
         <Outlet />
       </div>
