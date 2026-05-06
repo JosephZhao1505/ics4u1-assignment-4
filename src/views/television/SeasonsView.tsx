@@ -10,7 +10,7 @@ export const SeasonsView = () => {
   const { data } = useTmdb<MediaResponse>(`${TELEVISION_ENDPOINT}/${id}`, {}, []);
 
   const gridData = (data?.seasons ?? [])
-    .filter((result) => result.season_number > 0 && result.name) //remove the extra specials season
+    .filter((result) => result.season_number > 0 && result.name)
     .map((result) => ({
       id: result.season_number,
       imagePath: result.poster_path,
