@@ -32,7 +32,6 @@ export const Link = ({ children, to, match = [] }: LinkProps) => {
         return (
           <>
             {children}
-            {/* The Active Indicator (underlining glow) */}
             <span 
               className={`absolute bottom-0 left-0 h-0.5 bg-indigo-500 transition-all duration-300 ${
                 isCurrent ? 'w-full opacity-100' : 'w-0 opacity-0'

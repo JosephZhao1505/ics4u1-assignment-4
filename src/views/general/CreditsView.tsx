@@ -2,9 +2,10 @@ import { ImageGrid } from '@/components';
 import { MOVIE_ENDPOINT, TELEVISION_ENDPOINT } from '@/core/constants';
 import type { CreditsResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const CreditsView = () => {
+  const navigate = useNavigate();
   const { mediaType, id } = useParams();
   const endpoint = mediaType === 'movie' ? `${MOVIE_ENDPOINT}/${id}/credits` : `${TELEVISION_ENDPOINT}/${id}/credits`;
   const { data } = useTmdb<CreditsResponse>(endpoint, {}, [id]);
@@ -23,7 +24,7 @@ export const CreditsView = () => {
   return (
     <section className="px-2">
       <h2 className="text-2xl font-bold mb-6">Credits</h2>
-      {data.cast.length ? <ImageGrid results={gridData} /> : <p className="text-gray-400 text-center">No credits available.</p>}
+      {data.cast.length ? <ImageGrid results={gridData} onClick={(id) => navigate(`/person/${id}/career`)} /> : <p className="text-gray-400 text-center">No credits available.</p>}
     </section>
   );
 };

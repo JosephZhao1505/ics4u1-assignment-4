@@ -1,4 +1,4 @@
-import { ImageGrid, Link, LinkGroup, Pagination } from '@/components';
+import { Footer, ImageGrid, Link, LinkGroup, Pagination } from '@/components';
 import { DISCOVER_ENDPOINT } from '@/core/constants';
 import type { MoviesResponse, TvsResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
@@ -76,6 +76,7 @@ export const GenreView = () => {
                 }}
             />
             <Pagination page={page} maxPages={data.total_pages} onClick={setPage} />
+            <Footer />
         </section>
     );
 };

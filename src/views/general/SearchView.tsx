@@ -1,4 +1,4 @@
-import { ImageGrid, Pagination } from '@/components';
+import { Footer, ImageGrid, Pagination } from '@/components';
 import { SEARCH_ENDPOINT } from '@/core/constants';
 import type { SearchResponse } from '@/core/types';
 import { useDebounce, useTmdb } from '@/hooks';
@@ -43,6 +43,7 @@ export const SearchView = () => {
       ) : (
         <p className="text-center text-gray-400">No search results found</p>
       )}
+      <Footer />
     </section>
   );
 };

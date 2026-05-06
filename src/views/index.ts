@@ -12,3 +12,6 @@ export * from '@/views/general/ReviewsView';
 export * from '@/views/general/SearchView';
 export * from '@/views/television/SeasonsView';
 export * from '@/views/television/EpisodeView';
+export * from '@/views/people/CareerView';
+export * from '@/views/people/ImagesView';
+export * from '@/views/people/PersonView';

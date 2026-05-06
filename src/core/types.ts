@@ -95,3 +95,29 @@ export type SearchResponse = {
   total_pages: number;
   total_results: number;
 };
+
+export type PersonResponse = {
+  id: number;
+  name: string;
+  profile_path: string; // main image
+  place_of_birth: string;
+  birthday: string;
+  biography: string;
+};
+
+
+export type PersonImagesResponse = {
+  profiles: Array<{
+    id: number;
+    file_path: string;
+  }>;
+};
+
+export type PersonCareerResponse = {
+  cast: Array<{
+    id: number;
+    title: string;
+    character: string;
+    poster_path: string;
+  }>;
+};
