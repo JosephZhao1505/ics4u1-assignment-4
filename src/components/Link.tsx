@@ -7,6 +7,9 @@ type LinkProps = {
   match?: string[];
 };
 
+// Common layout styles for the link
+const baseStyles = 'relative px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out hover:text-white';
+
 export const Link = ({ children, to, match = [] }: LinkProps) => {
   const { pathname } = useLocation();
   const matched = match.some((pattern) => matchPath({ path: pattern, end: false }, pathname));
@@ -15,15 +18,29 @@ export const Link = ({ children, to, match = [] }: LinkProps) => {
     <NavLink
       replace
       to={to}
-      className={({ isActive }) =>
-        `px-4 py-2 rounded-md transition-all duration-200 border ${
-          isActive || matched
-            ? 'bg-white text-gray-900 border-white shadow-lg scale-105'
-            : 'bg-gray-700 text-gray-300 border-gray-700 hover:bg-gray-600 hover:text-white hover:border-gray-500'
-        }`
-      }
+      className={({ isActive }) => {
+        const isCurrent = isActive || matched;
+        return `${baseStyles} ${
+          isCurrent 
+            ? 'text-white' 
+            : 'text-slate-400'
+        }`;
+      }}
     >
-      {children}
+      {({ isActive }) => {
+        const isCurrent = isActive || matched;
+        return (
+          <>
+            {children}
+            {/* The Active Indicator (underlining glow) */}
+            <span 
+              className={`absolute bottom-0 left-0 h-0.5 bg-indigo-500 transition-all duration-300 ${
+                isCurrent ? 'w-full opacity-100' : 'w-0 opacity-0'
+              }`} 
+            />
+          </>
+        );
+      }}
     </NavLink>
   );
 };

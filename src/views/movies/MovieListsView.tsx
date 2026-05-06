@@ -1,5 +1,5 @@
 import { Footer, ImageGrid, LinkGroup, Pagination } from '@/components';
-import { MOVIE_LISTS_ENDPOINT } from '@/core/constants';
+import { MOVIE_ENDPOINT } from '@/core/constants';
 import type { MoviesResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ export const MovieListsView = () => {
   const { listType } = useParams<{ listType: string }>();
   const formattedList = listType?.replace('-', '_');
   const list = listType || 'now_playing';
-  const { data } = useTmdb<MoviesResponse>(`${MOVIE_LISTS_ENDPOINT}/${formattedList}`, { page }, [page, list]);
+  const { data } = useTmdb<MoviesResponse>(`${MOVIE_ENDPOINT}/${formattedList}`, { page }, [page, list]);
 
   useEffect(() => {
     setPage(1);

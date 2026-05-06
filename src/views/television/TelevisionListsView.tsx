@@ -1,5 +1,5 @@
 import { Footer, ImageGrid, LinkGroup, Pagination } from '@/components';
-import { TELEVISION_LISTS_ENDPOINT } from '@/core/constants';
+import { TELEVISION_ENDPOINT } from '@/core/constants';
 import type { TvsResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ export const TelevisionListsView = () => {
   const { listType } = useParams<{ listType: string }>();
   const formattedList = listType?.replace('-', '_');
   const list = listType || 'airing_today';
-  const { data } = useTmdb<TvsResponse>(`${TELEVISION_LISTS_ENDPOINT}/${formattedList}`, { page }, [page, list]);
+  const { data } = useTmdb<TvsResponse>(`${TELEVISION_ENDPOINT}/${formattedList}`, { page }, [page, list]);
 
   useEffect(() => {
     setPage(1);
@@ -20,7 +20,7 @@ export const TelevisionListsView = () => {
   const gridData = (data?.results ?? []).map((result) => ({
     id: result.id,
     imagePath: result.poster_path,
-    primaryText: result.original_name,
+    primaryText: result.name,
   }));
 
   if (!data) {

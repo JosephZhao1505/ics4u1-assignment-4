@@ -1,4 +1,6 @@
+// SearchBar.tsx
 import type { ChangeEvent } from 'react';
+import { HiSearch } from 'react-icons/hi';
 
 type SearchBarProps = {
   value: string;
@@ -7,17 +9,14 @@ type SearchBarProps = {
 
 export const SearchBar = ({ value, onChange }: SearchBarProps) => {
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">Search</h1>
+    <div className="flex items-center flex-1 gap-2">
+      <HiSearch className="text-slate-500 shrink-0" />
       <input
         type="search"
         value={value}
-        onChange={(e: ChangeEvent<HTMLInputElement>) => {
-          onChange(e.target.value);
-        }}
-        placeholder="Search actors, directors..."
-        className="w-full p-3 rounded-xl bg-gray-800 border border-gray-700
-                   focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+        onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e.target.value)}
+        placeholder="Search..."
+        className="w-full bg-transparent border-none text-sm text-slate-200 placeholder:text-slate-500 focus:ring-0 outline-none"
       />
     </div>
   );

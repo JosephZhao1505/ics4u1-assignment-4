@@ -1,12 +1,13 @@
 import { ImageGrid } from '@/components';
-import { MOVIE_LISTS_ENDPOINT } from '@/core/constants';
+import { MOVIE_ENDPOINT, TELEVISION_ENDPOINT } from '@/core/constants';
 import type { CreditsResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
 import { useParams } from 'react-router-dom';
 
 export const CreditsView = () => {
-  const { id } = useParams();
-  const { data } = useTmdb<CreditsResponse>(`${MOVIE_LISTS_ENDPOINT}/${id}/credits`, {}, []);
+  const { mediaType, id } = useParams();
+  const endpoint = mediaType === 'movie' ? `${MOVIE_ENDPOINT}/${id}/credits` : `${TELEVISION_ENDPOINT}/${id}/credits`;
+  const { data } = useTmdb<CreditsResponse>(endpoint, {}, [id]);
 
   const gridData = (data?.cast ?? []).map((result) => ({
     id: result.id,

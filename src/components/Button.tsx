@@ -2,22 +2,23 @@ import type { ReactNode } from 'react';
 
 type ButtonProps = {
   children: ReactNode;
-  variant?: 'primary' | 'grey';
+  variant?: 'primary' | 'secondary';
   disabled?: boolean;
   onClick: () => void;
 };
 
-const baseStyles = 'inline-block px-6 py-3 rounded-2xl transition font-medium shadow-lg';
+const baseStyles = "px-5 py-2.5 rounded-lg font-medium text-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer";
+
 const variants = {
-  primary: 'bg-blue-600 hover:bg-blue-500 text-white',
-  grey: 'bg-gray-700 hover:bg-gray-600 text-white',
+  primary: "bg-indigo-600 text-white shadow-lg shadow-indigo-500/20",
+  secondary: "text-slate-400 hover:text-slate-200 hover:bg-slate-800"
 };
 
 export const Button = ({ children, variant = 'primary', disabled = false, onClick }: ButtonProps) => {
   return (
     <button
       type="button"
-      className={`${baseStyles} ${disabled ? variants['grey'] : variants[variant]}`}
+      className={`${baseStyles} ${variants[variant]}`}
       disabled={disabled}
       onClick={onClick}
     >

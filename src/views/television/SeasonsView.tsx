@@ -1,14 +1,13 @@
 import { ImageGrid } from '@/components';
-import { TELEVISION_LISTS_ENDPOINT } from '@/core/constants';
-import type { TvResponse } from '@/core/types';
+import { TELEVISION_ENDPOINT } from '@/core/constants';
+import type { MediaResponse } from '@/core/types';
 import { useTmdb } from '@/hooks';
-// import { FaCalendarAlt } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 
 export const SeasonsView = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { data } = useTmdb<TvResponse>(`${TELEVISION_LISTS_ENDPOINT}/${id}`, {}, []);
+  const { data } = useTmdb<MediaResponse>(`${TELEVISION_ENDPOINT}/${id}`, {}, []);
 
   const gridData = (data?.seasons ?? [])
     .filter((result) => result.season_number > 0 && result.name) //remove the extra specials season

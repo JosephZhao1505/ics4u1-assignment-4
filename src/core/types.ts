@@ -10,41 +10,25 @@ export type MoviesResponse = {
 export type TvsResponse = {
   results: Array<{
     id: number;
-    original_name: string;
+    name: string;
     poster_path: string;
   }>;
   total_pages: number;
 };
 
-export type MovieResponse = {
-  id: number;
-  title: string;
-  overview: string;
-  poster_path: string;
-  backdrop_path: string;
-  release_date: string;
-  vote_average: string;
-  videos?: {
-    results: Array<{
-      key: string;
-      name: string;
-      site: string;
-      type: string;
-    }>;
-  };
-};
-
-export type TvResponse = {
+export type MediaResponse = {
   id: number;
   overview: string;
   poster_path: string;
   backdrop_path: string;
-  vote_average: string;
+  vote_average: number;
+  title?: string;
+  release_date?: string;
   name?: string;
   first_air_date?: string;
   number_of_seasons?: number;
   number_of_episodes?: number;
-    seasons?: Array<{
+  seasons?: Array<{
     id: number;
     name: string;
     air_date?: string;
@@ -61,7 +45,7 @@ export type TvResponse = {
   };
 };
 
-export type SeasonResponse = {
+export type SeasonsResponse = {
   name: string;
   season_number: number;
   air_date?: string;
@@ -91,11 +75,22 @@ export type ReviewsResponse = {
   }>;
 };
 
+export type TrailersResponse = {
+  results: Array<{
+    key: string;
+    name: string;
+    site: string;
+    type: string;
+  }>;
+};
+
 export type SearchResponse = {
   results: Array<{
     id: number;
-    name: string;
-    profile_path: string | null;
+    name?: string;
+    title?: string;
+    profile_path?: string;
+    poster_path?: string;
   }>;
   total_pages: number;
   total_results: number;
